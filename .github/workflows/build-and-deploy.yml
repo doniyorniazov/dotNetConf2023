@@ -4,7 +4,9 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - 'main/api'
+      - 'main'
+    paths:
+      - api/**
 
 env:
   WEBAPP_NAME: dotNetConf
