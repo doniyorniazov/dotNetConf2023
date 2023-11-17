@@ -1,9 +1,11 @@
-name: CI CD 
+name: CI CD
 
 on:
+  workflow_dispatch:
   push:
     branches:
-      - 'main'
+      - 'main/api'
+
 env:
   WEBAPP_NAME: dotNetConf
   RESOURCE_GROUP: dotNetConf
@@ -20,7 +22,7 @@ jobs:
         with:
           login-server: contoso.azurecr.io
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - run: |
           cd ./api
