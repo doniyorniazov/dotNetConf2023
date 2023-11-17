@@ -1,4 +1,4 @@
-name: ci-cd
+name: CI CD 
 
 on:
   push:
@@ -45,11 +45,11 @@ jobs:
           images: 'niazovd/product-service:${{ github.sha }}'
 
   production:
-    name: Release to production
+    name: Deploy to production
     needs: staging
     runs-on: ubuntu-latest
     environment:
-      name: 'Production'
+      name: 'production'
       url: 'https://${{ env.WEBAPP_NAME }}.azurewebsites.net/'
 
     steps:
