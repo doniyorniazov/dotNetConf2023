@@ -7,6 +7,10 @@ on:
       - 'main'
     paths:
       - 'api/**'
+env:
+  WEBAPP_NAME: dotNetConf
+  SLOT_NAME: staging
+
 jobs:
   #buildAndPublish
   build:
@@ -29,3 +33,21 @@ jobs:
           cd ./api
           docker build -t niazovd/product-service:${{ github.sha }} .
           docker push niazovd/product-service:${{ github.sha }}
+  staging:
+    name: Deploy staging
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      #login to Azure CLI
+      - name: Login to Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }} #uses service principal
+
+      #deploy to dotNetConf-staging
+      - name: Deploy to staging environment
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.WEBAPP_NAME }}
+          slot-name: ${{ env.SLOT_NAME }}
+          images: niazovd/product-service:${{ github.sha }}
